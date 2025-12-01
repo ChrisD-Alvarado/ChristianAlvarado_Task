@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -9,6 +10,11 @@ public class PlayerController : MonoBehaviour
     private Tilemap collisionTilemap;
 
     private PlayerActions controls;
+    [SerializeField]
+    float moveDuration = 0.3f;
+
+    bool moving = false;
+
     private void Awake()
     {
         controls = new PlayerActions();
@@ -27,15 +33,26 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        controls.Main.Movement.performed += ctx => Move(ctx.ReadValue<Vector2>());
+        controls.Main.Movement.performed += ctx => HandleMove(ctx.ReadValue<Vector2>());
+        controls.Main.Movement.canceled += ctx => HandleMoveCanceled();
     }
 
-    private void Move(Vector2 direction)
+    private void HandleMove(Vector2 direction)
     {
         if (CanMove(direction))
         {
-            transform.position += (Vector3)direction;
+            moving = true;
+            StartCoroutine(Move(transform.position + (Vector3)direction));
         }
+        else
+        {
+            moving = false;
+        }
+    }
+
+    private void HandleMoveCanceled()
+    {
+        moving = false;
     }
 
     private bool CanMove(Vector2 direction)
@@ -48,5 +65,22 @@ public class PlayerController : MonoBehaviour
         }
 
         return true;
+    }
+
+    IEnumerator Move(Vector2 direction)
+    {
+        Vector2 startPosition = transform.position;
+        Vector2 endPosition = direction;
+
+        float elapsedTime = 0;
+        while(elapsedTime < moveDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float percent = elapsedTime / moveDuration;
+            transform.position = Vector2.Lerp(startPosition, endPosition, percent);
+            yield return null;
+        }
+
+        transform.position = endPosition;
     }
 }

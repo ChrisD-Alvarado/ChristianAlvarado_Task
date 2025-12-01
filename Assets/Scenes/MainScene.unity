@@ -572,6 +572,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   groundTilemap: {fileID: 2085297535}
   collisionTilemap: {fileID: 469126088}
+  moveDuration: 0.3
 --- !u!212 &1102130822
 SpriteRenderer:
   m_ObjectHideFlags: 0
