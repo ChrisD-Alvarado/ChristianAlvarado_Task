@@ -1,17 +1,19 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 [Serializable]
 public class PlayerInventory
 {
     [SerializeField]
-    List<InventoryItem> inventoryItems;
+    List<InventoryItem> inventoryItems = new List<InventoryItem>();
 
     public bool ItemSelected { private set; get; } = false;
     InventoryItem selectedItem;
 
     //Updated Event
+    public Action<List<InventoryItem>> InventoryUpdatedAction;
 
     public bool AddItemToInventory(ItemDataScriptableObject item, int quantity)
     {
@@ -69,6 +71,7 @@ public class PlayerInventory
         }
 
         inventoryItems[slot].SetItem(item, quantity);
+        InventoryUpdatedAction?.Invoke(inventoryItems);
     }
 
     public int HowManyOfItem(ItemDataScriptableObject item)
@@ -98,6 +101,7 @@ public class PlayerInventory
             }
         }
 
+        InventoryUpdatedAction?.Invoke(inventoryItems);
         DebugInventory();
     }
 

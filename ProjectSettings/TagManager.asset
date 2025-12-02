@@ -51,5 +51,8 @@ TagManager:
   - name: UpperTiles
     uniqueID: 448781683
     locked: 0
+  - name: InventoryUI
+    uniqueID: 2543188435
+    locked: 0
   m_RenderingLayers:
   - Default

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec5176f1c5e85464c9cf3f7e5ae8409e, type: 3}
   m_Name: Wood_ItemSO
   m_EditorClassIdentifier: Assembly-CSharp::ItemDataScriptableObject
-  itemIcon: {fileID: -156050481060907563, guid: d6c6c73fc8c5faf479f698ef9b214c9a, type: 3}
-  itemSprite: {fileID: -6364197540668021774, guid: e61f421218743e74bb8d1211a14cb50d, type: 3}
+  itemIcon: {fileID: -6364197540668021774, guid: e61f421218743e74bb8d1211a14cb50d, type: 3}
+  itemSprite: {fileID: -156050481060907563, guid: d6c6c73fc8c5faf479f698ef9b214c9a, type: 3}
   itemName: Wood
   description: Wood planks, used tu build.
   equipment: 0

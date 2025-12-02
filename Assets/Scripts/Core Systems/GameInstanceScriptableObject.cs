@@ -13,8 +13,7 @@ public class GameInstanceScriptableObject : ScriptableObject
             {
                 instance = Resources.Load<GameInstanceScriptableObject>("GlobalGameInstanceSO");
                 //Try to load Player inventory
-                //If load failed, Player Inventory should be populated with default inventory
-                instance.PlayerInventory.PopulateInventory(instance.DefaultPlayerInventory);
+                instance.LoadPlayerInventory();
             }
 
             if(instance == null)
@@ -26,6 +25,8 @@ public class GameInstanceScriptableObject : ScriptableObject
         }
     }
 
+    public static bool AlreadyLoaded { private set; get; } = false;
+
     [SerializeField]
     PlayerInventory defaultInventory;
     public PlayerInventory DefaultPlayerInventory { get { return defaultInventory; } }
@@ -33,9 +34,23 @@ public class GameInstanceScriptableObject : ScriptableObject
     [SerializeField]
     List<ItemDataScriptableObject> allItems;
 
-    public PlayerInventory PlayerInventory { private set; get; }
+    public PlayerInventory PlayerInventory { private set; get; } = new PlayerInventory();
 
-    public void LoadPlayerInventory(Dictionary<string, int> items)
+    public void LoadPlayerInventory()
+    {
+        //Load Player Inventory
+        Dictionary<string, int> playerInventoryDictionary = new Dictionary<string, int>();
+        //playerInventoryDictionary = Load Inventory
+
+        if(playerInventoryDictionary.Keys.Count < 1)
+        {
+            instance.PlayerInventory.PopulateInventory(instance.DefaultPlayerInventory);
+        }
+
+        AlreadyLoaded = true;
+    }
+
+    public void PopulatePlayerInventory(Dictionary<string, int> items)
     {
         foreach(string s in items.Keys)
         {
