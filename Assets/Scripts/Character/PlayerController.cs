@@ -22,9 +22,12 @@ public class PlayerController : MonoBehaviour
     bool playerIsInteracting = false;
     bool playerCanInteract = true;
 
+    PlayerInteractableDetector interactableDetector;
+
     Animator animator;
     const string ANIMATOR_MOVING_PARAMETER = "Moving";
     const string ANIMATOR_FACING_PARAMETER_PREFIX = "Facing";
+    const string ANIMATOR_USE_PARAMETER_PREFIX = "Use";
 
 
     private void Awake()
@@ -48,6 +51,8 @@ public class PlayerController : MonoBehaviour
     {
         controls.Main.Movement.started += ctx => HandleMove(ctx.ReadValue<Vector2>());
         controls.Main.Movement.canceled += ctx => HandleMoveCanceled();
+        //controls.Main.UseItem.performed
+        //controls.Main.Interact.performed
     }
 
     private void Update()
