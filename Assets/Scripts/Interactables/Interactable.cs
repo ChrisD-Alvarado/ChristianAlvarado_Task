@@ -1,9 +1,3 @@
-/*
- * Code by: Chris D. Alvarado
- * Created on: December 2025
- * Last Update: December 1st 2025
- * 
- * */
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
