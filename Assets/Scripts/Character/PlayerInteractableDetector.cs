@@ -13,8 +13,11 @@ public class PlayerInteractableDetector : MonoBehaviour
     {
         if(collision.tag == "Interactable")
         {
-            DetectsInteractable = true;
             currentInteractable = collision.GetComponent<Interactable>();
+            if(currentInteractable.State != InteractableState.Hidden)
+            {
+                DetectsInteractable = true;
+            }
         }
     }
 
@@ -30,5 +33,18 @@ public class PlayerInteractableDetector : MonoBehaviour
     public InteractableKind GetInteractableKind()
     {
         return currentInteractable.Kind;
+    }
+
+    public void SendInteractMessage()
+    {
+        if(DetectsInteractable && currentInteractable.State != InteractableState.Hidden)
+        {
+            currentInteractable.Interact();
+            if (currentInteractable.HidesOnFirstInteraction)
+            {
+                DetectsInteractable = false;
+                currentInteractable = null;
+            }
+        }
     }
 }

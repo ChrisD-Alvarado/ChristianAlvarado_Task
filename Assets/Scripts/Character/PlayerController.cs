@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
         controls.Main.Movement.started += ctx => HandleMove(ctx.ReadValue<Vector2>());
         controls.Main.Movement.canceled += ctx => HandleMoveCanceled();
         //controls.Main.UseItem.performed
-        //controls.Main.Interact.performed
+        controls.Main.Interact.performed += ctx => HandleInteraction();
     }
 
     private void Update()
@@ -265,6 +265,15 @@ public class PlayerController : MonoBehaviour
     }
 
     #region Interactions
+
+    void HandleInteraction()
+    {
+        if (interactableDetector.DetectsInteractable)
+        {
+            interactableDetector.SendInteractMessage();
+        }
+    }
+
     public void GrantItem(ItemDataScriptableObject item, int amount)
     {
         Debug.Log($"Player gets {amount} {item}");
