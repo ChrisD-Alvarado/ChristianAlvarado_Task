@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec5176f1c5e85464c9cf3f7e5ae8409e, type: 3}
+  m_Name: Wood_ItemSO
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDataScriptableObject
+  itemIcon: {fileID: -6364197540668021774, guid: e61f421218743e74bb8d1211a14cb50d, type: 3}
+  itemSprite: {fileID: -6364197540668021774, guid: e61f421218743e74bb8d1211a14cb50d, type: 3}
+  itemName: Wood
+  description: Wood planks, used tu build.
+  equipment: 0
