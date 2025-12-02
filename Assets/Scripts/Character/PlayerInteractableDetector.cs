@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerInteractableDetector : MonoBehaviour
 {
     PlayerController playerController;
-    Collider2D collider;
 
     Interactable currentInteractable;
 

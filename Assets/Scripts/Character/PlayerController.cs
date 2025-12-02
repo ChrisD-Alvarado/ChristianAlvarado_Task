@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     {
         controls = new PlayerActions();
         animator = GetComponent<Animator>();
+        interactableDetector = GetComponentInChildren<PlayerInteractableDetector>();
     }
 
     private void OnEnable()
@@ -91,7 +92,7 @@ public class PlayerController : MonoBehaviour
     bool facingDirectionChanged = false;
     void SetFacingDirection(WorldDirection direction)
     {
-        if(direction != WorldDirection.None && currentFacingDirection != direction)
+        if (direction != WorldDirection.None && currentFacingDirection != direction)
         {
             facingDirectionChanged = true;
         }
@@ -101,6 +102,7 @@ public class PlayerController : MonoBehaviour
              animator.SetBool(ANIMATOR_FACING_PARAMETER_PREFIX + currentFacingDirection.ToString(), false);
 
             currentFacingDirection = direction;
+            interactableDetector.transform.localPosition = GetFacingDirectionAsVector(currentFacingDirection);
 
             if (!isCurrentlyMoving)
             {
@@ -126,7 +128,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3Int gridPos = groundTilemap.WorldToCell(transform.position + (Vector3)direction);
 
-        if (!groundTilemap.HasTile(gridPos) || collisionTilemap.HasTile(gridPos))
+        if (!groundTilemap.HasTile(gridPos) || collisionTilemap.HasTile(gridPos) || interactableDetector.DetectsInteractable)
         {
             return false;
         }
@@ -261,6 +263,19 @@ public class PlayerController : MonoBehaviour
                 return new Vector2(0, 0);
         }
     }
+
+    #region Interactions
+    public void GrantItem(ItemDataScriptableObject item, int amount)
+    {
+        Debug.Log($"Player gets {amount} {item}");
+
+        //Add items to inventory
+
+        //If auto save
+        //SaveInventory();
+    }
+
+    #endregion
 }
 
 public enum WorldDirection
