@@ -12,5 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21adc4a2d8710b49aab3e74e5cb946a, type: 3}
   m_Name: GlobalGameInstanceSO
   m_EditorClassIdentifier: Assembly-CSharp::GameInstanceScriptableObject
-  defaultInventory: {fileID: 0}
-  allItems: []
+  defaultInventory:
+    inventoryItems:
+    - itemData: {fileID: 11400000, guid: d4e8ebcc4e4dabc4e95a913713681305, type: 2}
+      quantity: 10
+    - itemData: {fileID: 11400000, guid: bef12c3eb82450b448d51810865db63a, type: 2}
+      quantity: 5
+    - itemData: {fileID: 11400000, guid: 58cd8865af3869b42bb5b7e0918bc390, type: 2}
+      quantity: 3
+  allItems:
+  - {fileID: 11400000, guid: 58cd8865af3869b42bb5b7e0918bc390, type: 2}
+  - {fileID: 11400000, guid: bef12c3eb82450b448d51810865db63a, type: 2}
+  - {fileID: 11400000, guid: d4e8ebcc4e4dabc4e95a913713681305, type: 2}

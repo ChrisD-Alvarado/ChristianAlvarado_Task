@@ -1,0 +1,122 @@
+using UnityEngine;
+using System;
+using System.Collections.Generic;
+
+[Serializable]
+public class PlayerInventory
+{
+    [SerializeField]
+    List<InventoryItem> inventoryItems;
+
+    public bool ItemSelected { private set; get; } = false;
+    InventoryItem selectedItem;
+
+    //Updated Event
+
+    public bool AddItemToInventory(ItemDataScriptableObject item, int quantity)
+    {
+        int firstEmptyslot = -1;
+        bool foundItem = false;
+
+        for (int i = inventoryItems.Count -1; i >= 0; i--)
+        {
+            if(inventoryItems[i].Quantity <= 0)
+            {
+                firstEmptyslot = i;
+            }
+            else if (inventoryItems[i].ItemData == item)
+            {
+                foundItem = true;
+                SetIventorySlot(i, item, inventoryItems[i].Quantity + quantity);
+                DebugInventory();
+                return true;
+            }
+        }
+
+        if (!foundItem && firstEmptyslot >= 0)
+        {
+            SetIventorySlot(firstEmptyslot, item, quantity);
+            DebugInventory();
+            return true;
+        }
+
+        Debug.LogWarning($"There are not empty inventory slots");
+        return false;
+    }
+
+    public bool RemoveItemFromInventory(ItemDataScriptableObject item, int quantity)
+    {
+        for(int i = 0; i < inventoryItems.Count; i++)
+        {
+            if(inventoryItems[i].ItemData == item && inventoryItems[i].Quantity > 0)
+            {
+                SetIventorySlot(i, item, inventoryItems[i].Quantity - quantity);
+                DebugInventory();
+                return true;
+            }
+        }
+
+        Debug.LogWarning($"Trying to remove {quantity} {item.ItemName} but player doesn't have the item");
+        return false;
+    }
+
+    public void SetIventorySlot(int slot, ItemDataScriptableObject item, int quantity)
+    {
+        if(quantity < 0)
+        {
+            //Never have negative items in inventory
+            quantity = 0;
+        }
+
+        inventoryItems[slot].SetItem(item, quantity);
+    }
+
+    public int HowManyOfItem(ItemDataScriptableObject item)
+    {
+        int result = 0;
+        foreach(InventoryItem s in inventoryItems)
+        {
+            if(s.Quantity > result && s.ItemData == item)
+            {
+                result = s.Quantity;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    public void PopulateInventory(PlayerInventory inventoryToCopy)
+    {
+        inventoryItems.Clear();
+        for(int i = 0; i < inventoryToCopy.inventoryItems.Count; i++)
+        {
+            inventoryItems.Add(new InventoryItem());
+            if(inventoryToCopy.inventoryItems[i].Quantity > 0)
+            {
+                inventoryItems[i].SetItem(inventoryToCopy.inventoryItems[i].ItemData, inventoryToCopy.inventoryItems[i].Quantity);
+            }
+        }
+
+        DebugInventory();
+    }
+
+    void DebugInventory()
+    {
+        string log = "Inventory: ";
+        for(int i= 0; i < inventoryItems.Count; i++)
+        {
+            log += $"Slot {i}: ";
+            if(inventoryItems[i].Quantity > 0)
+            {
+                log += $"{inventoryItems[i].Quantity} {inventoryItems[i].ItemData.ItemName}s ";
+            }
+            else
+            {
+                log += "empty. ";
+            }
+        }
+
+        Debug.Log(log);
+    }
+}

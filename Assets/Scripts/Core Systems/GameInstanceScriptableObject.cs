@@ -12,6 +12,9 @@ public class GameInstanceScriptableObject : ScriptableObject
             if (instance == null)
             {
                 instance = Resources.Load<GameInstanceScriptableObject>("GlobalGameInstanceSO");
+                //Try to load Player inventory
+                //If load failed, Player Inventory should be populated with default inventory
+                instance.PlayerInventory.PopulateInventory(instance.DefaultPlayerInventory);
             }
 
             if(instance == null)
@@ -24,12 +27,13 @@ public class GameInstanceScriptableObject : ScriptableObject
     }
 
     [SerializeField]
-    PlayerInventoryScriptableObject defaultInventory;
+    PlayerInventory defaultInventory;
+    public PlayerInventory DefaultPlayerInventory { get { return defaultInventory; } }
 
     [SerializeField]
     List<ItemDataScriptableObject> allItems;
 
-    public PlayerInventoryScriptableObject PlayerInventory { private set; get; }
+    public PlayerInventory PlayerInventory { private set; get; }
 
     public void LoadPlayerInventory(Dictionary<string, int> items)
     {

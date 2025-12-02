@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ItemSO", menuName = "Items/ItemData")]
+[CreateAssetMenu(fileName = "ItemSO", menuName = "Inventory/ItemData")]
 public class ItemDataScriptableObject : ScriptableObject
 {
     [SerializeField]
@@ -13,7 +13,7 @@ public class ItemDataScriptableObject : ScriptableObject
 
     [SerializeField]
     string itemName;
-    public string ItemName { get { return ItemName; } }
+    public string ItemName { get { return itemName; } }
 
     [SerializeField]
     string description;
