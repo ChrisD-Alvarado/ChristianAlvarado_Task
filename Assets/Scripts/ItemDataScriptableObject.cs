@@ -20,6 +20,6 @@ public class ItemDataScriptableObject : ScriptableObject
     public string Description { get { return description; } }
 
     [SerializeField]
-    bool equipment;
-    public bool Equipment { get { return equipment; } }
+    bool consumable;
+    public bool Consumable { get { return consumable; } }
 }

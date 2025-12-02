@@ -10,7 +10,7 @@ public class PlayerInventory
     List<InventoryItem> inventoryItems = new List<InventoryItem>();
 
     public bool ItemSelected { private set; get; } = false;
-    InventoryItem selectedItem;
+    public InventoryItem CurrentSelectedItem { private set; get; } = new InventoryItem();
 
     //Updated Event
     public Action<List<InventoryItem>> InventoryUpdatedAction;
@@ -46,7 +46,16 @@ public class PlayerInventory
         return false;
     }
 
-    public bool RemoveItemFromInventory(ItemDataScriptableObject item, int quantity)
+    public bool ConsumeSelectedItemFromInventory()
+    {
+        bool result = RemoveItemFromInventory(CurrentSelectedItem.ItemData);
+
+        //Handle Consumed Item effects
+
+        return result;
+    }
+
+    public bool RemoveItemFromInventory(ItemDataScriptableObject item, int quantity = 1)
     {
         for(int i = 0; i < inventoryItems.Count; i++)
         {
@@ -103,6 +112,16 @@ public class PlayerInventory
 
         InventoryUpdatedAction?.Invoke(inventoryItems);
         DebugInventory();
+    }
+
+    public void SetSelectedItem(InventoryItem selectedItem)
+    {
+        CurrentSelectedItem = selectedItem;
+        ItemSelected = true;
+    }
+    public void DeselectItem()
+    {
+        ItemSelected = false;
     }
 
     void DebugInventory()

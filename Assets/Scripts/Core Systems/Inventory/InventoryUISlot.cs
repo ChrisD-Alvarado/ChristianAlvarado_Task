@@ -21,7 +21,6 @@ public class InventoryUISlot : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI tooltipText;
 
-    //TODO: Add Tooltip
     //TODO: Add Click interactions
 
     public void UpdateSlot(InventoryItem newItem)
@@ -33,6 +32,7 @@ public class InventoryUISlot : MonoBehaviour
             iconImage.sprite = currentItem.ItemData.ItemIcon;
             quantityText.text = $"x{currentItem.Quantity.ToString()}";
             tooltipText.text = currentItem.ItemData.Description;
+            slotButton.interactable = currentItem.ItemData.Consumable;
         }
         else
         {
@@ -46,13 +46,21 @@ public class InventoryUISlot : MonoBehaviour
         quantityText.text = "";
     }
 
-    public void ShowTooltip()
+    void ShowTooltip(bool show)
     {
-        tooltip.SetActive(true);
+        tooltip.SetActive(show);
     }
 
-    public void HideTooltip()
+    public void SetSlotSelected(bool selected)
     {
-        tooltip.SetActive(false);
+        ShowTooltip(selected);
+    }
+
+    public void SelectItem(bool selected)
+    {
+        if (selected)
+        {
+            InventoryUIManager.Instance.SelectItem(currentItem);
+        }
     }
 }

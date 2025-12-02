@@ -20,6 +20,9 @@ public class InventoryUIManager : MonoBehaviour
     [SerializeField]
     List<InventoryUISlot> inventorySlots = new List<InventoryUISlot>();
 
+    [SerializeField]
+    ConfirmInventoryWindow confirmWindow;
+
 
     private void Awake()
     {
@@ -30,6 +33,7 @@ public class InventoryUIManager : MonoBehaviour
             inventorySlots.AddRange(GetComponentsInChildren<InventoryUISlot>());
             GameInstanceScriptableObject.Instance.PlayerInventory.InventoryUpdatedAction += OnInventoryUpdated;
             GameInstanceScriptableObject.Instance.LoadPlayerInventory();
+            ShowConfirmWindow(false);
         }
         else
         {
@@ -52,15 +56,30 @@ public class InventoryUIManager : MonoBehaviour
         }
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void SelectItem(InventoryItem selectedItem)
     {
-        
+        ShowConfirmWindow(true);
+        confirmWindow.ItemWasSelected(selectedItem);
+        GameInstanceScriptableObject.Instance.PlayerInventory.SetSelectedItem(selectedItem);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ShowConfirmWindow(bool show)
     {
-        
+        confirmWindow.gameObject.SetActive(show);
+
+        if (!show)
+        {
+            GameInstanceScriptableObject.Instance.PlayerInventory.DeselectItem();
+        }
+    }
+
+    public void ConfirmConsumeItem()
+    {
+        if (GameInstanceScriptableObject.Instance.PlayerInventory.ConsumeSelectedItemFromInventory())
+        {
+            Debug.Log("Item Consumed");
+            //Handle consumed item UI consequences if needed
+        }
+        ShowConfirmWindow(false);
     }
 }

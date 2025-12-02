@@ -16,4 +16,4 @@ MonoBehaviour:
   itemSprite: {fileID: 7613102580841939865, guid: d6c6c73fc8c5faf479f698ef9b214c9a, type: 3}
   itemName: Apple
   description: Fresh and delicious red fruit. Everyone likes it
-  equipment: 0
+  consumable: 1
