@@ -26,6 +26,8 @@ public class InventoryUIManager : MonoBehaviour
         if(instance == null)
         {
             instance = this;
+            inventorySlots.Clear();
+            inventorySlots.AddRange(GetComponentsInChildren<InventoryUISlot>());
             GameInstanceScriptableObject.Instance.PlayerInventory.InventoryUpdatedAction += OnInventoryUpdated;
             GameInstanceScriptableObject.Instance.LoadPlayerInventory();
         }

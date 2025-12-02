@@ -12,6 +12,18 @@ public class InventoryUISlot : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI quantityText;
 
+    [SerializeField]
+    Button slotButton;
+
+    [SerializeField]
+    GameObject tooltip;
+
+    [SerializeField]
+    TextMeshProUGUI tooltipText;
+
+    //TODO: Add Tooltip
+    //TODO: Add Click interactions
+
     public void UpdateSlot(InventoryItem newItem)
     {
         if(newItem.Quantity > 0)
@@ -19,7 +31,8 @@ public class InventoryUISlot : MonoBehaviour
             currentItem = newItem;
             iconImage.enabled = true;
             iconImage.sprite = currentItem.ItemData.ItemIcon;
-            quantityText.text = currentItem.Quantity.ToString();
+            quantityText.text = $"x{currentItem.Quantity.ToString()}";
+            tooltipText.text = currentItem.ItemData.Description;
         }
         else
         {
@@ -31,5 +44,15 @@ public class InventoryUISlot : MonoBehaviour
     {
         iconImage.enabled = false;
         quantityText.text = "";
+    }
+
+    public void ShowTooltip()
+    {
+        tooltip.SetActive(true);
+    }
+
+    public void HideTooltip()
+    {
+        tooltip.SetActive(false);
     }
 }

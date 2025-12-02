@@ -15,5 +15,5 @@ MonoBehaviour:
   itemIcon: {fileID: -3502868180152427110, guid: 8c4a97241623c5e45ac04f57c218bd51, type: 3}
   itemSprite: {fileID: 7613102580841939865, guid: d6c6c73fc8c5faf479f698ef9b214c9a, type: 3}
   itemName: Apple
-  description: Fresh and delicious red fruit. Everyone like's it
+  description: Fresh and delicious red fruit. Everyone likes it
   equipment: 0
