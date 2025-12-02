@@ -22,9 +22,15 @@ public class PlayerController : MonoBehaviour
     bool playerIsInteracting = false;
     bool playerCanInteract = true;
 
+    Animator animator;
+    const string ANIMATOR_MOVING_PARAMETER = "Moving";
+    const string ANIMATOR_FACING_PARAMETER_PREFIX = "Facing";
+
+
     private void Awake()
     {
         controls = new PlayerActions();
+        animator = GetComponent<Animator>();
     }
 
     private void OnEnable()
@@ -77,15 +83,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    bool facingDirectionChanged = false;
     void SetFacingDirection(WorldDirection direction)
     {
-        if (direction != WorldDirection.None)
+        if(direction != WorldDirection.None && currentFacingDirection != direction)
         {
-            currentFacingDirection = direction;
+            facingDirectionChanged = true;
         }
 
-        //Animator set facing direction 
+        if (direction != WorldDirection.None)
+        {
+             animator.SetBool(ANIMATOR_FACING_PARAMETER_PREFIX + currentFacingDirection.ToString(), false);
 
+            currentFacingDirection = direction;
+
+            if (!isCurrentlyMoving)
+            {
+                animator.SetBool(ANIMATOR_FACING_PARAMETER_PREFIX + currentFacingDirection.ToString(), true);
+                facingDirectionChanged = false;
+            }
+        }
     }
 
     private void HandleMoveCanceled()
@@ -117,6 +134,11 @@ public class PlayerController : MonoBehaviour
         isCurrentlyMoving = true;
         Vector2 startPosition = transform.position;
         Vector2 endPosition = direction;
+        
+        animator.SetBool(ANIMATOR_FACING_PARAMETER_PREFIX + currentFacingDirection.ToString(), true);
+    
+
+        animator.SetBool(ANIMATOR_MOVING_PARAMETER, true);
 
         float elapsedTime = 0;
         while(elapsedTime < moveDuration)
@@ -173,6 +195,9 @@ public class PlayerController : MonoBehaviour
         {
             yield break;
         }
+
+
+        animator.SetBool(ANIMATOR_MOVING_PARAMETER, false);
 
         playerCanInteract = false;
 
