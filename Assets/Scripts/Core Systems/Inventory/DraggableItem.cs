@@ -59,13 +59,4 @@ public class DraggableItem : MonoBehaviour
             collision.GetComponent<InventoryUISlot>().SetSwapIcon(draggedItem.ItemData.ItemIcon);
         }
     }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.tag == "UISlot")
-        {
-            Debug.Log($"Drag Item leaves slot {SlotUnderItem}");
-            //collision.GetComponent<InventoryUISlot>().HideSwapIcon();
-        }
-    }
 }

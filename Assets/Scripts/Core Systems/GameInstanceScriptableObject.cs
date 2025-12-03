@@ -34,6 +34,8 @@ public class GameInstanceScriptableObject : ScriptableObject
     [SerializeField]
     List<ItemDataScriptableObject> allItems;
 
+    public ItemDataScriptableObject DefaultItem { get { return allItems[0]; } }
+
     public PlayerInventory PlayerInventory { private set; get; } = new PlayerInventory();
 
     public void LoadPlayerInventory()

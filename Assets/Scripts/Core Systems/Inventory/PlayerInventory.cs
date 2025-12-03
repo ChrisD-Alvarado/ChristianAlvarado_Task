@@ -73,13 +73,17 @@ public class PlayerInventory
 
     public void SetIventorySlot(int slot, ItemDataScriptableObject item, int quantity)
     {
-        if(quantity < 0)
+
+        if (quantity < 0)
         {
             //Never have negative items in inventory
             quantity = 0;
+            inventoryItems[slot].SetItem(GameInstanceScriptableObject.Instance.DefaultItem, quantity);
         }
-
-        inventoryItems[slot].SetItem(item, quantity);
+        else
+        {
+            inventoryItems[slot].SetItem(item, quantity);
+        }
         InventoryUpdatedAction?.Invoke(inventoryItems);
     }
 
@@ -96,6 +100,15 @@ public class PlayerInventory
         }
 
         return result;
+    }
+
+    public void PopulateInventory(List<InventoryItem> newInventoryList)
+    {
+        inventoryItems.Clear();
+        inventoryItems.AddRange(newInventoryList);
+
+        InventoryUpdatedAction?.Invoke(inventoryItems);
+        DebugInventory();
     }
 
     public void PopulateInventory(PlayerInventory inventoryToCopy)

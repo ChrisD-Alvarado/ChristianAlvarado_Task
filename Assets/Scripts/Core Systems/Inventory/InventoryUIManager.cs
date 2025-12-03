@@ -113,6 +113,8 @@ public class InventoryUIManager : MonoBehaviour
         tempItem = inventorySlots[slotA].CurrentItem;
         inventorySlots[slotA].UpdateSlot(inventorySlots[slotB].CurrentItem, slotA);
         inventorySlots[slotB].UpdateSlot(tempItem, slotB);
+
+        UpdateInventoryFromUI();
     }
 
     public void SwapWithDraggedSlot(int slotToSwap)
@@ -125,8 +127,29 @@ public class InventoryUIManager : MonoBehaviour
         {
             inventorySlots[slotToSwap].UpdateSlot(dragSlot.DraggedItem, slotToSwap);
             inventorySlots[draggedSlot].ClearSlot();
+            UpdateInventoryFromUI();
         }
         inventorySlots[slotToSwap].HideSwapIcon();
+    }
+
+    public void UpdateInventoryFromUI()
+    {
+        List <InventoryItem> newInventory = new List<InventoryItem>();
+        foreach(InventoryUISlot s in inventorySlots)
+        {
+            InventoryItem newItem = new InventoryItem();
+            if(s.IsAssigned)
+            {
+                newItem.SetItem(s.CurrentItem.ItemData, s.CurrentItem.Quantity);
+            }
+            else
+            {
+                newItem.SetItem(GameInstanceScriptableObject.Instance.DefaultItem, 0);
+            }
+            newInventory.Add(newItem);
+        }
+
+        GameInstanceScriptableObject.Instance.PlayerInventory.PopulateInventory(newInventory);
     }
 
     public void StartDrag(int slot)
