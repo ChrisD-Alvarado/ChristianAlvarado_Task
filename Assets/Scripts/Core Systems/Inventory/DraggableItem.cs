@@ -8,8 +8,9 @@ public class DraggableItem : MonoBehaviour
     Image itemIcon;
 
     InventoryItem draggedItem = new InventoryItem();
+    public InventoryItem DraggedItem { get { return draggedItem; } }
 
-    InventoryUISlot slotUnderItem = new InventoryUISlot();
+    public int SlotUnderItem = -1;
 
     bool isBeingDragged = false;
 
@@ -35,9 +36,9 @@ public class DraggableItem : MonoBehaviour
         draggedItem = item;
         itemIcon.enabled = true;
         isBeingDragged = true;
+        rectTransform.position = Mouse.current.position.ReadValue();
         itemIcon.sprite = item.ItemData.ItemIcon;
-        slotUnderItem = selectedSlot;
-        slotUnderItem.ClearSlot();
+        SlotUnderItem = selectedSlot.CurrentSlot;
     }
 
     public void StopDraggingItem()
@@ -45,25 +46,26 @@ public class DraggableItem : MonoBehaviour
         itemIcon.enabled = false;
         isBeingDragged = false;
 
-        slotUnderItem.UpdateSlot(draggedItem, slotUnderItem.CurrentSlot);
+        InventoryUIManager.Instance.SwapWithDraggedSlot(SlotUnderItem);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "UISlot")
         {
-            slotUnderItem = collision.GetComponent<InventoryUISlot>();
-            Debug.Log($"Drag Item is over slot {slotUnderItem.CurrentSlot}");
+            SlotUnderItem = collision.GetComponent<InventoryUISlot>().CurrentSlot;
+            Debug.Log($"Drag Item is over slot {SlotUnderItem}");
+            InventoryUIManager.Instance.HideSwapIcons();
+            collision.GetComponent<InventoryUISlot>().SetSwapIcon(draggedItem.ItemData.ItemIcon);
+        }
+    }
 
-            //Move item left or right
-            if(transform.position.x > collision.transform.position.x)
-            {
-                InventoryUIManager.Instance.MoveItemRight(slotUnderItem.CurrentSlot);
-            }
-            else
-            {
-                InventoryUIManager.Instance.MoveItemLeft(slotUnderItem.CurrentSlot);
-            }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "UISlot")
+        {
+            Debug.Log($"Drag Item leaves slot {SlotUnderItem}");
+            //collision.GetComponent<InventoryUISlot>().HideSwapIcon();
         }
     }
 }

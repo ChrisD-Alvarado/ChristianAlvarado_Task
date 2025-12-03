@@ -10,6 +10,9 @@ public class InventoryUISlot : MonoBehaviour
     Image iconImage;
 
     [SerializeField]
+    Image swapIcon;
+
+    [SerializeField]
     TextMeshProUGUI quantityText;
 
     [SerializeField]
@@ -21,8 +24,6 @@ public class InventoryUISlot : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI tooltipText;
     
-    [SerializeField]
-    float startDragDelay = 0.5f;
     float dragStartTime;
     bool isClicked = false;
 
@@ -46,6 +47,7 @@ public class InventoryUISlot : MonoBehaviour
         }
         else
         {
+            SetSlot(slot);
             ClearSlot();
         }
     }
@@ -55,6 +57,12 @@ public class InventoryUISlot : MonoBehaviour
         iconImage.enabled = false;
         quantityText.text = "";
         IsAssigned = false;
+        HideSwapIcon();
+    }
+
+    public void SetSlot(int slot)
+    {
+        CurrentSlot = slot;
     }
 
     void ShowTooltip(bool show)
@@ -85,23 +93,38 @@ public class InventoryUISlot : MonoBehaviour
     public void OnStoppedClick()
     {
         Debug.Log($"Slot {CurrentSlot} stopped click");
-        if (isClicked && Time.time - dragStartTime < startDragDelay && CurrentItem.ItemData.Consumable)
+        if (isClicked && Time.time - dragStartTime < InventoryUIManager.Instance.StartDragDelay && CurrentItem.ItemData.Consumable)
         {
             InventoryUIManager.Instance.SelectItem(CurrentItem);
         }
 
         isClicked = false;
+        if (InventoryUIManager.Instance.IsDragging)
+        {
+            InventoryUIManager.Instance.StopDragging();
+        }
     }
 
     private void Update()
     {
         if (isClicked)
         {
-            if (Time.time - dragStartTime >= startDragDelay)
+            if (Time.time - dragStartTime >= InventoryUIManager.Instance.StartDragDelay)
             {
                 InventoryUIManager.Instance.StartDrag(CurrentSlot);
                 isClicked = false;
             }
         }
+    }
+
+    public void SetSwapIcon(Sprite icon)
+    {
+        swapIcon.sprite = icon;
+        swapIcon.enabled = true;
+    }
+
+    public void HideSwapIcon()
+    {
+        swapIcon.enabled = false;
     }
 }

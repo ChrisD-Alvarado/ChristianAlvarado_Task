@@ -1887,7 +1887,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 100, y: 100}
+  m_Size: {x: 80, y: 80}
   m_EdgeRadius: 0
 --- !u!114 &1206546418
 MonoBehaviour:
@@ -1902,6 +1902,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DraggableItemSlot
   itemIcon: {fileID: 1206546420}
+  SlotUnderItem: -1
 --- !u!114 &1206546419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2599,6 +2600,7 @@ MonoBehaviour:
   - {fileID: 0}
   confirmWindow: {fileID: 1231580762}
   dragSlot: {fileID: 1206546418}
+  startDragDelay: 0.2
 --- !u!1 &1689582868
 GameObject:
   m_ObjectHideFlags: 0

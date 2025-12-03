@@ -26,7 +26,11 @@ public class InventoryUIManager : MonoBehaviour
     [SerializeField]
     DraggableItem dragSlot;
 
-    bool isDragging = false;
+    [SerializeField]
+    float startDragDelay = 0.5f;
+    public float StartDragDelay {  get { return startDragDelay; } }
+
+    public bool IsDragging { private set; get; } = false;
     int draggedSlot = 0;
 
 
@@ -58,6 +62,7 @@ public class InventoryUIManager : MonoBehaviour
             else
             {
                 inventorySlots[i].ClearSlot();
+                inventorySlots[i].SetSlot(i);
             }
         }
     }
@@ -89,54 +94,57 @@ public class InventoryUIManager : MonoBehaviour
         ShowConfirmWindow(false);
     }
 
-    public void MoveItemRight(int slot)
+    public bool IsSlotAssigned(int slot)
     {
-        if (slot + 1 >= inventorySlots.Count)
-        {
-            Debug.LogError("This is the last slot");
-            return;
-        }
+        return inventorySlots[slot].IsAssigned;
+    }
 
-        if (inventorySlots[slot].IsAssigned)
+    public void HideSwapIcons()
+    {
+        foreach(InventoryUISlot i in inventorySlots)
         {
-            inventorySlots[slot + 1].UpdateSlot(inventorySlots[slot].CurrentItem, slot + 1);
-            inventorySlots[slot].ClearSlot();
-        }
-        else { 
-            Debug.Log("This slot is empty");
+            i.HideSwapIcon();
         }
     }
 
-    public void MoveItemLeft(int slot)
+    InventoryItem tempItem;
+    public void SwapSlots(int slotA, int slotB)
     {
-        if (slot - 1 < 0)
-        {
-            Debug.LogError("This is the first slot");
-            return;
-        }
+        tempItem = inventorySlots[slotA].CurrentItem;
+        inventorySlots[slotA].UpdateSlot(inventorySlots[slotB].CurrentItem, slotA);
+        inventorySlots[slotB].UpdateSlot(tempItem, slotB);
+    }
 
-        if (inventorySlots[slot].IsAssigned)
+    public void SwapWithDraggedSlot(int slotToSwap)
+    {
+        if (inventorySlots[slotToSwap].IsAssigned)
         {
-            inventorySlots[slot - 1].UpdateSlot(inventorySlots[slot].CurrentItem, slot - 1);
-            inventorySlots[slot].ClearSlot();
+            SwapSlots(draggedSlot, slotToSwap);
         }
-        else { 
-            Debug.Log("This slot is empty");
+        else
+        {
+            inventorySlots[slotToSwap].UpdateSlot(dragSlot.DraggedItem, slotToSwap);
+            inventorySlots[draggedSlot].ClearSlot();
         }
+        inventorySlots[slotToSwap].HideSwapIcon();
     }
 
     public void StartDrag(int slot)
     {
         draggedSlot = slot;
+        IsDragging = true;
         dragSlot.DragItem(inventorySlots[draggedSlot].CurrentItem, inventorySlots[draggedSlot]);
+        inventorySlots[draggedSlot].ClearSlot();
     }
 
     public void StopDragging()
     {
-        if (isDragging)
+        Debug.Log("Stop Dragging");
+        if (IsDragging)
         {
             dragSlot.StopDraggingItem();
+            inventorySlots[dragSlot.SlotUnderItem].UpdateSlot(dragSlot.DraggedItem, dragSlot.SlotUnderItem);
         }
-        isDragging = false;
+        IsDragging = false;
     }
 }
