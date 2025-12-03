@@ -1,25 +1,33 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
-public class DraggableItemSlot : MonoBehaviour
+public class DraggableItem : MonoBehaviour
 {
     [SerializeField]
     Image itemIcon;
 
-    InventoryItem draggedItem;
+    InventoryItem draggedItem = new InventoryItem();
 
-    InventoryUISlot slotUnderItem;
+    InventoryUISlot slotUnderItem = new InventoryUISlot();
 
     bool isBeingDragged = false;
 
+    RectTransform rectTransform;
+
     private void Awake()
     {
-        StopDraggingItem();
+        itemIcon.enabled = false;
+        isBeingDragged = false;
+        rectTransform = GetComponent<RectTransform>();
     }
 
     private void Update()
     {
-        transform.position = Input.mousePosition;
+        if (isBeingDragged)
+        {
+            rectTransform.position = Mouse.current.position.ReadValue();
+        }
     }
 
     public void DragItem(InventoryItem item, InventoryUISlot selectedSlot)

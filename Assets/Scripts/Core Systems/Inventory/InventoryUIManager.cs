@@ -23,6 +23,12 @@ public class InventoryUIManager : MonoBehaviour
     [SerializeField]
     ConfirmInventoryWindow confirmWindow;
 
+    [SerializeField]
+    DraggableItem dragSlot;
+
+    bool isDragging = false;
+    int draggedSlot = 0;
+
 
     private void Awake()
     {
@@ -90,16 +96,47 @@ public class InventoryUIManager : MonoBehaviour
             Debug.LogError("This is the last slot");
             return;
         }
-        
-        //if (inventorySlots[slot + 1].IsAssigned) { 
-        //Call MoveItemRight again
-        //}
-        //else
-        //Assign this slot's item to the next
+
+        if (inventorySlots[slot].IsAssigned)
+        {
+            inventorySlots[slot + 1].UpdateSlot(inventorySlots[slot].CurrentItem, slot + 1);
+            inventorySlots[slot].ClearSlot();
+        }
+        else { 
+            Debug.Log("This slot is empty");
+        }
     }
 
     public void MoveItemLeft(int slot)
     {
+        if (slot - 1 < 0)
+        {
+            Debug.LogError("This is the first slot");
+            return;
+        }
 
+        if (inventorySlots[slot].IsAssigned)
+        {
+            inventorySlots[slot - 1].UpdateSlot(inventorySlots[slot].CurrentItem, slot - 1);
+            inventorySlots[slot].ClearSlot();
+        }
+        else { 
+            Debug.Log("This slot is empty");
+        }
+    }
+
+    public void StartDrag(int slot)
+    {
+        draggedSlot = slot;
+        dragSlot.DragItem(inventorySlots[draggedSlot].CurrentItem, inventorySlots[draggedSlot]);
+    }
+
+    public void StopDragging()
+    {
+        if (isDragging)
+        {
+            dragSlot.StopDraggingItem();
+        }
+        isDragging = false;
     }
 }
