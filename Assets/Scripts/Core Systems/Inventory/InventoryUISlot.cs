@@ -21,10 +21,14 @@ public class InventoryUISlot : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI tooltipText;
 
+    public int CurrentSlot { private set; get; }
+
     //TODO: Add Click interactions
 
-    public void UpdateSlot(InventoryItem newItem)
+    public void UpdateSlot(InventoryItem newItem, int slot)
     {
+        CurrentSlot = slot;
+
         if(newItem.Quantity > 0)
         {
             currentItem = newItem;

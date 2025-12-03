@@ -47,7 +47,7 @@ public class InventoryUIManager : MonoBehaviour
         {
             if(i < inventory.Count)
             {
-                inventorySlots[i].UpdateSlot(inventory[i]);
+                inventorySlots[i].UpdateSlot(inventory[i], i);
             }
             else
             {
@@ -81,5 +81,25 @@ public class InventoryUIManager : MonoBehaviour
             //Handle consumed item UI consequences if needed
         }
         ShowConfirmWindow(false);
+    }
+
+    public void MoveItemRight(int slot)
+    {
+        if (slot + 1 >= inventorySlots.Count)
+        {
+            Debug.LogError("This is the last slot");
+            return;
+        }
+        
+        //if (inventorySlots[slot + 1].IsAssigned) { 
+        //Call MoveItemRight again
+        //}
+        //else
+        //Assign this slot's item to the next
+    }
+
+    public void MoveItemLeft(int slot)
+    {
+
     }
 }
