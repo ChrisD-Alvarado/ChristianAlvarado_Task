@@ -31,6 +31,7 @@ public class PlayerInventory
                 foundItem = true;
                 SetIventorySlot(i, item, inventoryItems[i].Quantity + quantity);
                 DebugInventory();
+                SaveInventory();
                 return true;
             }
         }
@@ -39,6 +40,7 @@ public class PlayerInventory
         {
             SetIventorySlot(firstEmptyslot, item, quantity);
             DebugInventory();
+            SaveInventory();
             return true;
         }
 
@@ -63,6 +65,7 @@ public class PlayerInventory
             {
                 SetIventorySlot(i, item, inventoryItems[i].Quantity - quantity);
                 DebugInventory();
+                SaveInventory();
                 return true;
             }
         }
@@ -84,6 +87,7 @@ public class PlayerInventory
         {
             inventoryItems[slot].SetItem(item, quantity);
         }
+        SaveInventory();
         InventoryUpdatedAction?.Invoke(inventoryItems);
     }
 
@@ -121,6 +125,10 @@ public class PlayerInventory
             {
                 inventoryItems[i].SetItem(inventoryToCopy.inventoryItems[i].ItemData, inventoryToCopy.inventoryItems[i].Quantity);
             }
+            else
+            {
+                inventoryItems[i].SetItem(GameInstanceScriptableObject.Instance.DefaultItem, 0);
+            }
         }
 
         InventoryUpdatedAction?.Invoke(inventoryItems);
@@ -135,6 +143,19 @@ public class PlayerInventory
     public void DeselectItem()
     {
         ItemSelected = false;
+    }
+
+
+    public void TriggerUpdatedInventoryMessage()
+    {
+        InventoryUpdatedAction?.Invoke(inventoryItems);
+    }
+
+    public void SaveInventory()
+    {
+        Debug.Log("Save started");
+
+        SaveManager.Instance.SaveInventory(inventoryItems);
     }
 
     void DebugInventory()

@@ -279,9 +279,6 @@ public class PlayerController : MonoBehaviour
         Debug.Log($"Player gets {amount} {item}");
 
         GameInstanceScriptableObject.Instance.PlayerInventory.AddItemToInventory(item, amount);
-
-        //If auto save
-        GameInstanceScriptableObject.Instance.SaveInventory();
     }
 
     #endregion

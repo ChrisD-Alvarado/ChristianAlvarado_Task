@@ -41,13 +41,7 @@ public class GameInstanceScriptableObject : ScriptableObject
     public void LoadPlayerInventory()
     {
         //Load Player Inventory
-        Dictionary<string, int> playerInventoryDictionary = new Dictionary<string, int>();
-        //playerInventoryDictionary = Load Inventory
-
-        if(playerInventoryDictionary.Keys.Count < 1)
-        {
-            instance.PlayerInventory.PopulateInventory(instance.DefaultPlayerInventory);
-        }
+        PlayerInventory = SaveManager.Instance.LoadInventory();
 
         AlreadyLoaded = true;
     }
@@ -91,10 +85,5 @@ public class GameInstanceScriptableObject : ScriptableObject
         }
 
         return result;
-    }
-
-    public void SaveInventory()
-    {
-
     }
 }

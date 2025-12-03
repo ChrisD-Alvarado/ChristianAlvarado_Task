@@ -20,6 +20,10 @@ MonoBehaviour:
       quantity: 5
     - itemData: {fileID: 11400000, guid: 58cd8865af3869b42bb5b7e0918bc390, type: 2}
       quantity: 3
+    - itemData: {fileID: 11400000, guid: 58cd8865af3869b42bb5b7e0918bc390, type: 2}
+      quantity: 0
+    - itemData: {fileID: 11400000, guid: 58cd8865af3869b42bb5b7e0918bc390, type: 2}
+      quantity: 0
   allItems:
   - {fileID: 11400000, guid: 58cd8865af3869b42bb5b7e0918bc390, type: 2}
   - {fileID: 11400000, guid: bef12c3eb82450b448d51810865db63a, type: 2}

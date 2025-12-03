@@ -42,7 +42,7 @@ public class InventoryUIManager : MonoBehaviour
             inventorySlots.Clear();
             inventorySlots.AddRange(GetComponentsInChildren<InventoryUISlot>());
             GameInstanceScriptableObject.Instance.PlayerInventory.InventoryUpdatedAction += OnInventoryUpdated;
-            GameInstanceScriptableObject.Instance.LoadPlayerInventory();
+            GameInstanceScriptableObject.Instance.PlayerInventory.TriggerUpdatedInventoryMessage();
             ShowConfirmWindow(false);
         }
         else
@@ -150,6 +150,7 @@ public class InventoryUIManager : MonoBehaviour
         }
 
         GameInstanceScriptableObject.Instance.PlayerInventory.PopulateInventory(newInventory);
+        GameInstanceScriptableObject.Instance.PlayerInventory.SaveInventory();
     }
 
     public void StartDrag(int slot)
